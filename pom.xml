@@ -1,0 +1,156 @@
+<!--
+  Copyright (c) 2012 Marc Carre <carre.marc@gmail.com>.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Lesser Public License v3.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/lgpl.html
+  
+  Contributors:
+      Marc Carre - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.carmatech.perfandra</groupId>
+	<artifactId>perfandra-parent</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version>1.6</java-version>
+		<cassandra-version>1.1.7</cassandra-version>
+		<hector-version>1.1-2</hector-version>
+		<slf4j-version>1.7.2</slf4j-version>
+		<logback-version>1.0.9</logback-version>
+		<mockito-version>1.9.5</mockito-version>
+		<junit-version>4.11</junit-version>
+		<cassandra-unit-version>1.1.1.2</cassandra-unit-version>
+	</properties>
+
+	<modules>
+		<module>perfandra-dao</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Cassandra and Hector -->
+			<dependency>
+			    <groupId>org.apache.cassandra</groupId>
+			    <artifactId>cassandra-all</artifactId>
+			    <version>${cassandra-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.hectorclient</groupId>
+			    <artifactId>hector-core</artifactId>
+			    <version>${hector-version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.cassandraunit</groupId>
+			    <artifactId>cassandra-unit</artifactId>
+			    <version>${cassandra-unit-version}</version>
+			</dependency>
+			
+			<!-- Other 3rd party dependencies -->
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-lang3</artifactId>
+			    <version>3.1</version>
+			</dependency>
+			
+			<!-- Logging with SLF4J and LogBack -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+				<version>${logback-version}</version>
+			</dependency>
+
+			<!-- Testing -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>${mockito-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.12.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.12.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cassandra-maven-plugin</artifactId>
+					<version>1.1.0-1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

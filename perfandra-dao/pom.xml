@@ -1,0 +1,183 @@
+<!-- Copyright (c) 2012 Marc Carre <carre.marc@gmail.com>. All rights reserved. 
+	This program and the accompanying materials are made available under the 
+	terms of the GNU Lesser Public License v3.0 which accompanies this distribution, 
+	and is available at http://www.gnu.org/licenses/lgpl.html Contributors: Marc 
+	Carre - initial API and implementation -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.carmatech.perfandra</groupId>
+		<artifactId>perfandra-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>perfandra-dao</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- Cassandra and Hector -->
+		<dependency>
+			<groupId>org.apache.cassandra</groupId>
+			<artifactId>cassandra-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hectorclient</groupId>
+			<artifactId>hector-core</artifactId>
+		</dependency>
+
+		<!-- Logging with SLF4J and LogBack -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+		</dependency>
+
+		<!-- Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+		<!-- Exclude cassandra-all and hector-core to instead use the versions -->
+		<!-- declared above. -->
+		<dependency>
+			<groupId>org.cassandraunit</groupId>
+			<artifactId>cassandra-unit</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.cassandra</groupId>
+					<artifactId>cassandra-all</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.hectorclient</groupId>
+					<artifactId>hector-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.netflix.astyanax</groupId>
+			<artifactId>astyanax</artifactId>
+			<version>1.0.6</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.netflix.astyanax</groupId> -->
+<!-- 			<artifactId>astyanax</artifactId> -->
+<!-- 			<version>1.56.18</version> -->
+<!-- 		</dependency> -->
+
+		<!-- cassandra-all uses 1.6 while cassandra-unit uses 1.9, hence potential -->
+		<!-- occurrences of NoSuchMethodException when running tests. -->
+		<!-- As 1.9 is backward compatible with 1.6, the below does NOT conflict -->
+		<!-- with cassandra-all and can be safely added to avoid exceptions. -->
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- Run tests in parallel -->
+					<parallel>methods</parallel>
+					<threadCount>10</threadCount>
+					<!-- *Test.java for unit tests -->
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<!-- *ITest.java for integration tests -->
+					<excludes>
+						<exclude>**/*ITest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<properties>
+						<property>
+							<name>listener</name>
+							<value>com.carmatech.perfandra.CassandraRunListener</value>
+						</property>
+					</properties>
+					<!-- *ITest.java for integration tests -->
+					<includes>
+						<include>**/*ITest.java</include>
+					</includes>
+					<excludes>
+						<exclude>%regex[.*utils.*]</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cassandra-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>start</goal>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
