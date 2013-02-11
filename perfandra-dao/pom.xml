@@ -172,8 +172,8 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>start</goal>
-							<goal>stop</goal>
+							<goal>start-cluster</goal>
+							<goal>stop-cluster</goal>
 						</goals>
 					</execution>
 				</executions>

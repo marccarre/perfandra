@@ -62,7 +62,7 @@ columnFamilies:
 - name: columnFamilyWithCompositeType
   type: STANDARD
   keyType: CompositeType(LongType,UTF8Type)
-  comparatorType: CompositeType(UTF8Type,IntegerType,UTF8Type)
+  comparatorType: CompositeType(UTF8Type(reversed=true),IntegerType,UTF8Type)
   defaultColumnValueType: UTF8Type 
   rows:
   - key: "10:azerty"

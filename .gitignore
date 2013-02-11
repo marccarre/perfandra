@@ -1,6 +1,9 @@
 # Cassandra instance:
 cassandra/
 
+# Specifications:
+schema.txt
+
 # OS/IDE Files #
 .DS_Store
 .metadata/
