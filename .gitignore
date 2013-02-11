@@ -1,6 +1,22 @@
-
-.DS_Store
-
-.metadata/
-
+# Cassandra instance:
 cassandra/
+
+# OS/IDE Files #
+.DS_Store
+.metadata/
+.settings/
+.project
+.classpath
+
+# Java classes #
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Build folders #
+bin/
+target/
+
