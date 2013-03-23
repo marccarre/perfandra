@@ -23,3 +23,5 @@ schema.txt
 bin/
 target/
 
+
+perfandra-gui/war/WEB-INF/web.xml
