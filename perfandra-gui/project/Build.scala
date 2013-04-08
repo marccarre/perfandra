@@ -11,6 +11,8 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
+    "com.netflix.astyanax" % "astyanax" % "1.56.34",
+    "org.cassandraunit" % "cassandra-unit" % "1.1.2.1" % "test",
     jdbc,
     anorm
   )

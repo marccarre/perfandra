@@ -89,11 +89,11 @@
 			</exclusions>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.netflix.astyanax</groupId>
-			<artifactId>astyanax</artifactId>
-			<version>1.0.6</version>
-		</dependency>
+<dependency>
+    <groupId>com.netflix.astyanax</groupId>
+    <artifactId>astyanax</artifactId>
+    <version>1.56.34</version>
+</dependency>
 <!-- 		<dependency> -->
 <!-- 			<groupId>com.netflix.astyanax</groupId> -->
 <!-- 			<artifactId>astyanax</artifactId> -->
