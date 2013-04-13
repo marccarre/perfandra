@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CassandraRunListener extends RunListener {
-	private static final Logger logger = LoggerFactory.getLogger(CassandraRunListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CassandraRunListener.class);
 
 	@Override
 	public void testRunStarted(Description description) {
-		logger.info("Load Cassandra data here...");
+		LOGGER.info("Load Cassandra data here...");
 	}
 }

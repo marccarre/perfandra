@@ -1,8 +1,13 @@
-<!-- Copyright (c) 2012 Marc Carre <carre.marc@gmail.com>. All rights reserved. 
-	This program and the accompanying materials are made available under the 
-	terms of the GNU Lesser Public License v3.0 which accompanies this distribution, 
-	and is available at http://www.gnu.org/licenses/lgpl.html Contributors: Marc 
-	Carre - initial API and implementation -->
+<!--
+  Copyright (c) 2012 Marc Carre <carre.marc@gmail.com>.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Lesser Public License v3.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/lgpl.html
+  
+  Contributors:
+      Marc Carre - initial API and implementation
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -22,14 +27,18 @@
 	</properties>
 
 	<dependencies>
-		<!-- Cassandra and Hector -->
-		<!--<dependency>
-			<groupId>org.apache.cassandra</groupId>
-			<artifactId>cassandra-all</artifactId>
-		</dependency>-->
+		<!-- Cassandra -->
 		<dependency>
-		    <groupId>com.netflix.astyanax</groupId>
-		    <artifactId>astyanax</artifactId>
+		    <groupId>org.apache.cassandra</groupId>
+		    <artifactId>cassandra-all</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.xerial.snappy</groupId>
+		    <artifactId>snappy-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.astyanax</groupId>
+			<artifactId>astyanax</artifactId>
 		</dependency>
 
 		<!-- Logging with SLF4J and LogBack -->
@@ -40,26 +49,32 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- Testing -->
@@ -71,40 +86,22 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 		</dependency>
-		<!-- Exclude cassandra-all and hector-core to instead use the versions -->
-		<!-- declared above. -->
 		<dependency>
 			<groupId>org.cassandraunit</groupId>
 			<artifactId>cassandra-unit</artifactId>
 			<scope>test</scope>
-			<!--<exclusions>
-				<exclusion>
-					<groupId>org.apache.cassandra</groupId>
-					<artifactId>cassandra-all</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hectorclient</groupId>
-					<artifactId>hector-core</artifactId>
-				</exclusion>
-			</exclusions>-->
 		</dependency>
-
-		<!-- cassandra-all uses 1.6 while cassandra-unit uses 1.9, hence potential -->
-		<!-- occurrences of NoSuchMethodException when running tests. -->
-		<!-- As 1.9 is backward compatible with 1.6, the below does NOT conflict -->
-		<!-- with cassandra-all and can be safely added to avoid exceptions. -->
-		<!--<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.9</version>
-			<scope>test</scope>
-		</dependency>
+		<!-- Dependencies conflict preventing to run cassandra-unit w/o the below. -->
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
 			<scope>test</scope>
-		</dependency>-->
+		</dependency>
+		<dependency>
+		    <groupId>org.yaml</groupId>
+		    <artifactId>snakeyaml</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -157,6 +154,28 @@
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>reserve-network-port</id>
+						<goals>
+							<goal>reserve-network-port</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<portNames>
+								<portName>cassandra.rpc.port</portName>
+								<portName>cassandra.jmx.port</portName>
+								<portName>cassandra.storage.port</portName>
+								<portName>cassandra.stop.port</portName>
+							</portNames>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cassandra-maven-plugin</artifactId>
 				<executions>
 					<execution>
@@ -166,6 +185,13 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<rpcPort>${cassandra.rpc.port}</rpcPort>
+					<jmxPort>${cassandra.jmx.port}</jmxPort>
+					<storagePort>${cassandra.storage.port}</storagePort>
+					<stopPort>${cassandra.stop.port}</stopPort>
+					<yaml>partitioner: org.apache.cassandra.dht.RandomPartitioner</yaml>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

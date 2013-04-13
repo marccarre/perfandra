@@ -10,7 +10,16 @@
 <!--             <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %highlight(%-5level) %cyan(%logger{32}) - %msg%n</pattern> -->
 <!--         </encoder> -->
 	</appender>
-	<root level="debug">
+    <logger name="org.apache.cassandra" level="OFF" additivity="false">
+      <appender-ref ref="stdout" />
+    </logger>
+    <logger name="me.prettyprint.cassandra" level="OFF" additivity="false">
+      <appender-ref ref="stdout" />
+    </logger>
+    <logger name="me.prettyprint.hector" level="OFF" additivity="false">
+      <appender-ref ref="stdout" />
+    </logger>
+	<root level="INFO">
 		<appender-ref ref="stdout" />
 	</root>
 </configuration>
