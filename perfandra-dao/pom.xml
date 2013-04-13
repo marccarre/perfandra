@@ -23,13 +23,13 @@
 
 	<dependencies>
 		<!-- Cassandra and Hector -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.cassandra</groupId>
 			<artifactId>cassandra-all</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
-			<groupId>org.hectorclient</groupId>
-			<artifactId>hector-core</artifactId>
+		    <groupId>com.netflix.astyanax</groupId>
+		    <artifactId>astyanax</artifactId>
 		</dependency>
 
 		<!-- Logging with SLF4J and LogBack -->
@@ -77,7 +77,7 @@
 			<groupId>org.cassandraunit</groupId>
 			<artifactId>cassandra-unit</artifactId>
 			<scope>test</scope>
-			<exclusions>
+			<!--<exclusions>
 				<exclusion>
 					<groupId>org.apache.cassandra</groupId>
 					<artifactId>cassandra-all</artifactId>
@@ -86,25 +86,14 @@
 					<groupId>org.hectorclient</groupId>
 					<artifactId>hector-core</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions>-->
 		</dependency>
-		
-<dependency>
-    <groupId>com.netflix.astyanax</groupId>
-    <artifactId>astyanax</artifactId>
-    <version>1.56.34</version>
-</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.netflix.astyanax</groupId> -->
-<!-- 			<artifactId>astyanax</artifactId> -->
-<!-- 			<version>1.56.18</version> -->
-<!-- 		</dependency> -->
 
 		<!-- cassandra-all uses 1.6 while cassandra-unit uses 1.9, hence potential -->
 		<!-- occurrences of NoSuchMethodException when running tests. -->
 		<!-- As 1.9 is backward compatible with 1.6, the below does NOT conflict -->
 		<!-- with cassandra-all and can be safely added to avoid exceptions. -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
 			<version>1.9</version>
@@ -115,7 +104,7 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

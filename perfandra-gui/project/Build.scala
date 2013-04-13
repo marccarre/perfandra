@@ -17,6 +17,7 @@ object ApplicationBuild extends Build {
     anorm
   )
 
+  val dao = Project("perfandra-dao", file("modules/dao"))
 
   val main = play.Project(appName, appVersion, appDependencies)
     .settings(Play2WarPlugin.play2WarSettings: _*)
@@ -34,5 +35,5 @@ object ApplicationBuild extends Build {
       // Link Jasmine to the standard 'sbt test' action. 
       // When running 'test' Jasmine tests will be run and after that other Play tests will be executed.
       (test in Test) <<= (test in Test) dependsOn (jasmine)        
-  )
+  ).dependsOn(dao)
 }
